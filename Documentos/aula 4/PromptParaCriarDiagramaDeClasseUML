@@ -1,0 +1,330 @@
+Crie um diagrama de classes UML partir do Pre-diagramaUMl.
+passo 1: ler o pre diagrama e verificar se ele possui algum erro
+passo 2: se teiver algum error corrigir 
+passo3: escreva o digrama uml na liguagem plantUMl 
+
+pre-diagramauml: Classe Usuario [classe abstrata]{
+    atributos{
+        -id: int
+        -nome: String
+        -cpf: String
+        -email: String
+        -senha: String
+    }
+
+    metodos{
+        +login(): boolean
+        +logout(): void
+    }
+
+    relacoesEMultiplicidades{
+        Usuario <|-- Aluno
+        Usuario <|-- Secretaria
+        Usuario <|-- PersonalProfessor
+    }
+}
+
+Classe Aluno [classe]{
+    atributos{
+        -matricula: String
+        -status: boolean
+    }
+
+    metodos{
+        +visualizarFichaTreino(): void
+        +visualizarPlanos(): void
+        +visualizarPagamentos(): void
+        +realizarPagamento(): void
+        +receberNotificacao(): void
+    }
+
+    relacoesEMultiplicidades{
+        Aluno "1" --> "1" Assinatura
+        Aluno "1" --> "*" Pagamento
+        Aluno "1" --> "*" FichaTreino
+        Aluno "1" --> "*" Notificacao
+        Aluno "1" --> "1" QRCode
+    }
+}
+
+Classe Secretaria [classe]{
+    atributos{
+        -setor: String
+    }
+
+    metodos{
+        +cadastrarAluno(): void
+        +gerenciarPlano(): void
+        +registrarPagamento(): void
+        +liberarAcesso(): void
+        +controlarInadimplencia(): void
+        +consultarFinanceiro(): void
+    }
+
+    relacoesEMultiplicidades{
+        Secretaria "1" --> "*" Aluno
+        Secretaria "1" --> "*" Plano
+        Secretaria "1" --> "*" Pagamento
+    }
+}
+
+Classe PersonalProfessor [classe]{
+    atributos{
+        -cref: String
+        -especialidade: String
+    }
+
+    metodos{
+        +criarFichaTreino(): void
+        +editarFichaTreino(): void
+        +consultarAluno(): void
+    }
+
+    relacoesEMultiplicidades{
+        PersonalProfessor "1" --> "*" FichaTreino
+        PersonalProfessor "1" --> "*" Aluno
+    }
+}
+
+Classe Sistema [classe]{
+    atributos{
+        -versao: String
+        -status: boolean
+    }
+
+    metodos{
+        +armazenarDados(): void
+    }
+
+    relacoesEMultiplicidades{
+        Sistema "1" --> "*" Usuario
+        Sistema "1" --> "*" Pagamento
+        Sistema "1" --> "*" Plano
+        Sistema "1" --> "*" Notificacao
+        Sistema "1" --> "*" FichaTreino
+        Sistema "1" --> "1" Catraca
+    }
+}
+
+Classe Catraca [classe]{
+    atributos{
+        -idCatraca: int
+        -status: boolean
+    }
+
+    metodos{
+        +receberQRCode(): void
+        +liberarEntrada(): void
+        +bloquearEntrada(): void
+    }
+
+    relacoesEMultiplicidades{
+        Catraca "1" --> "1" ServicoQRCode
+    }
+}
+
+Classe Plano [classe]{
+    atributos{
+        -idPlano: int
+        -nome: String
+        -valor: double
+        -validade: Date
+    }
+
+    metodos{
+        +ativarPlano(): void
+        +cancelarPlano(): void
+    }
+
+    relacoesEMultiplicidades{
+        Plano "1" --> "*" Assinatura
+    }
+}
+
+Classe Assinatura [classe]{
+    atributos{
+        -idAssinatura: int
+        -dataInicio: Date
+        -dataFim: Date
+        -status: String
+    }
+
+    metodos{
+        +ativar(): void
+        +cancelar(): void
+        +verificarValidade(): boolean
+    }
+
+    relacoesEMultiplicidades{
+        Assinatura "*" --> "1" Aluno
+        Assinatura "*" --> "1" Plano
+    }
+}
+
+Classe Pagamento [classe]{
+    atributos{
+        -idPagamento: int
+        -valor: double
+        -dataPagamento: Date
+        -status: String
+    }
+
+    metodos{
+        +confirmarPagamento(): void
+        +atualizarStatus(): void
+    }
+
+    relacoesEMultiplicidades{
+        Pagamento "*" --> "1" Aluno
+        Pagamento "1" --> "1" Assinatura
+    }
+}
+
+Classe HistoricoPagamento [classe]{
+    atributos{
+        -idHistorico: int
+        -descricao: String
+        -dataRegistro: Date
+    }
+
+    metodos{
+        +registrarHistorico(): void
+        +consultarHistorico(): void
+    }
+
+    relacoesEMultiplicidades{
+        HistoricoPagamento "*" --> "1" Pagamento
+    }
+}
+
+Classe FichaTreino [classe]{
+    atributos{
+        -idFicha: int
+        -descricao: String
+        -dataCriacao: Date
+    }
+
+    metodos{
+        +criarFicha(): void
+        +editarFicha(): void
+        +visualizarFicha(): void
+    }
+
+    relacoesEMultiplicidades{
+        FichaTreino "*" --> "1" Aluno
+        FichaTreino "*" --> "1" PersonalProfessor
+        FichaTreino "1" --> "*" Exercicio
+    }
+}
+
+Classe Exercicio [classe]{
+    atributos{
+        -idExercicio: int
+        -nome: String
+        -series: int
+        -repeticoes: int
+    }
+
+    metodos{
+        +adicionarExercicio(): void
+        +editarExercicio(): void
+    }
+
+    relacoesEMultiplicidades{
+        Exercicio "*" --> "1" FichaTreino
+    }
+}
+
+Classe QRCode [classe]{
+    atributos{
+        -codigo: String
+        -dataGeracao: Date
+        -ativo: boolean
+    }
+
+    metodos{
+        +gerar(): void
+        +validar(): boolean
+    }
+
+    relacoesEMultiplicidades{
+        QRCode "1" --> "1" Aluno
+    }
+}
+
+Classe Notificacao [classe]{
+    atributos{
+        -idNotificacao: int
+        -mensagem: String
+        -dataEnvio: Date
+    }
+
+    metodos{
+        +visualizar(): void
+    }
+
+    relacoesEMultiplicidades{
+        Notificacao "*" --> "1" Aluno
+    }
+}
+
+Classe ServicoAutenticacao [classe]{
+    atributos{
+        -token: String
+    }
+
+    metodos{
+        +validarLogin(): boolean
+        +gerarSessao(): void
+    }
+
+    relacoesEMultiplicidades{
+        ServicoAutenticacao --> Usuario
+    }
+}
+
+Classe ServicoPagamento [classe]{
+    atributos{
+        -gateway: String
+    }
+
+    metodos{
+        +processarPagamento(): boolean
+        +confirmarPagamento(): void
+    }
+
+    relacoesEMultiplicidades{
+        ServicoPagamento --> Pagamento
+    }
+}
+
+Classe ServicoQRCode [classe]{
+    atributos{
+        -statusValidacao: boolean
+    }
+
+    metodos{
+        +gerarQRCode(): String
+        +validarQRCode(): boolean
+    }
+
+    relacoesEMultiplicidades{
+        ServicoQRCode --> QRCode
+        ServicoQRCode --> Catraca
+    }
+}
+
+Classe ServicoNotificacao [classe]{
+    atributos{
+        -tipoEnvio: String
+    }
+
+    metodos{
+        +enviarNotificacao(): void
+    }
+
+    relacoesEMultiplicidades{
+        ServicoNotificacao --> Notificacao
+        ServicoNotificacao --> Aluno
+    }
+}
